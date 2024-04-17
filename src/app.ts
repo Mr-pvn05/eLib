@@ -1,9 +1,12 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import createHttpError, { HttpError } from "http-errors";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import router from "./user/user.router.ts";
 
 const app = express();
+
+// Middleware
+app.use(express.json());
 
 // Routes
 app.get("/", (req, res) => {
