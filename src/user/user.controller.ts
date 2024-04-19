@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { config } from "../config/config.ts";
 import { userType } from "./user.types.ts";
+import { access } from "fs";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,6 +22,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
     if (user) {
       const error = createHttpError(400, "User already exists with this email");
+      next(error);
     }
 
     // Hash the password
@@ -40,8 +42,33 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
     res.json({ acessToken: token });
   } catch (error) {
-    console.log(error);
+    return next(createHttpError(500, "Error while getting user"));
   }
 };
 
-export { createUser };
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return next(createHttpError(400, "Please provide email and password"));
+
+    // Check if user exists
+    const user = await userModel.findOne({ email });
+    if (!user) return next(createHttpError(400, "User not found"));
+
+    // Check if password is correct
+    const isMatch = await bcrypt.compare(password, user.password as string);
+    if (!isMatch) return next(createHttpError(400, "Invalid password"));
+
+    // Create and assign a token
+    const token = sign({ sub: user._id }, config.JWT_SECRET as string, {
+      expiresIn: "7d",
+    });
+
+    res.json({ accessToken: token });
+  } catch (error) {
+    return next(createHttpError(500, "Error while getting user"));
+  }
+};
+
+export { createUser, login };
