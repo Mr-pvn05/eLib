@@ -3,6 +3,7 @@ import createHttpError, { HttpError } from "http-errors";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import userRouter from "./user/user.router.ts";
 import bookRouter from "./book/book.router.ts";
+import path from "node:path";
 
 const app = express();
 
