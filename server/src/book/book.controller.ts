@@ -4,6 +4,7 @@ import path from "node:path";
 import createHttpError from "http-errors";
 import bookModel from "./book.model.ts";
 import fs from "node:fs";
+import { AuthRequest } from "../middleware/authenticate.ts";
 
 const createBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -45,16 +46,15 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
       format: bookFileMimeType,
     });
 
-    console.log("Upload cover image : ", uploadCoverImage);
-    console.log("Upload book file : ", uploadBookFile);
-
     // Save book to database
 
     const { title, author, genre } = req.body;
 
+    const _req = req as AuthRequest;
+
     const newBook = await bookModel.create({
       title,
-      author: "66227b46dc6f95fc88525023",
+      author: _req.userId,
       genre,
       coverImage: uploadCoverImage.secure_url,
       file: uploadBookFile.secure_url,
