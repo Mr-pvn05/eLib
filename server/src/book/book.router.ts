@@ -1,5 +1,10 @@
 import express from "express";
-import { createBook, listBooks, updateBook } from "./book.controller.ts";
+import {
+  createBook,
+  listBooks,
+  updateBook,
+  getBook,
+} from "./book.controller.ts";
 import path from "node:path";
 import authenticate from "../middleware/authenticate.ts";
 import multer from "multer";
@@ -45,5 +50,6 @@ router.patch(
   updateBook
 );
 router.get("/", listBooks);
+router.get("/:id", getBook);
 
 export default router;
