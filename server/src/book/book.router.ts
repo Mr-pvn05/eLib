@@ -4,6 +4,7 @@ import {
   listBooks,
   updateBook,
   getBook,
+  deleteBook,
 } from "./book.controller.ts";
 import path from "node:path";
 import authenticate from "../middleware/authenticate.ts";
@@ -51,5 +52,6 @@ router.patch(
 );
 router.get("/", listBooks);
 router.get("/:id", getBook);
+router.delete("/:id", authenticate, deleteBook);
 
 export default router;
