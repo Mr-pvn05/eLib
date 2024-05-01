@@ -13,7 +13,7 @@ const Navbar = () => {
                 <BookIcon />
               </div>
               <span className="text-xl font-bold uppercase text-primary-500">
-                Generate
+                Bibliophilia
               </span>
             </div>
           </Link>
