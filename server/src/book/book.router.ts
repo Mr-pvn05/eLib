@@ -12,8 +12,6 @@ import multer from "multer";
 
 const router = express.Router();
 
-console.log(path.resolve(__dirname));
-
 // file store local ->
 const upload = multer({
   dest: path.resolve(__dirname, "../../public/data/uploads"),
