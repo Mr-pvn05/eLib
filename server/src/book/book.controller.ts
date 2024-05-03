@@ -50,13 +50,14 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
 
     // Save book to database
 
-    const { title, genre } = req.body;
+    const { title, genre, description } = req.body;
 
     const _req = req as AuthRequest;
 
     const newBook = await bookModel.create({
       title,
       author: _req.userId,
+      description,
       genre,
       coverImage: uploadCoverImage.secure_url,
       file: uploadBookFile.secure_url,
@@ -179,7 +180,7 @@ const listBooks = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getBook = async (req: Request, res: Response, next: NextFunction) => {
-  const bookId = req.params.id;
+  const bookId = req.params.bookId;
   try {
     const book = await bookModel
       .findOne({ _id: bookId })

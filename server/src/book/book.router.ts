@@ -49,7 +49,7 @@ router.patch(
   updateBook
 );
 router.get("/", listBooks);
-router.get("/:id", getBook);
+router.get("/:bookId", getBook);
 router.delete("/:id", authenticate, deleteBook);
 
 export default router;
