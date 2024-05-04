@@ -1,25 +1,15 @@
 import Banner from "@/app/(home)/components/Banner";
 import BookList from "./components/BookList";
+import { Suspense } from "react";
+import Loading from "@/components/Loading";
 
 export default async function Home() {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/books`);
-    if (!response.ok) {
-      throw new Error("Error while fetching the books");
-    }
-
-    const books = await response.json();
-
-    console.log("Books : ", books);
-
-    return (
-      <>
-        <Banner />
-        <BookList books={books} />
-      </>
-    );
-  } catch (error) {
-    console.error("Error fetching books:", error);
-    return <div>Error fetching books. Please try again later.</div>;
-  }
+  return (
+    <>
+      <Banner />
+      <Suspense fallback={<Loading />}>
+        <BookList />
+      </Suspense>
+    </>
+  );
 }
